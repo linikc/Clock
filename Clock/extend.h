@@ -1,8 +1,8 @@
 #include <graphics.h>
 #include <string>
-#include <conio.h>
 #include <stdio.h>
 #include <ctime>
+#include <Windows.h>
 #include <thread>
 #ifdef EXTEND_H
 #define EXTEND_H
