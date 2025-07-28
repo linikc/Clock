@@ -21,7 +21,6 @@ void drawTime(LPCTSTR h, LPCTSTR m, LPCTSTR s, RECT hourRect, RECT HMSprt, RECT 
 void drawTimeC(int h, int m, int s);
 void drawTimeT(std::wstring h, std::wstring m, std::wstring s);
 void drawTip(std::wstring tip);
-void drawModeC(std::wstring mode);
+
 void graphClean();
 void fontInit();
-int kbinput();

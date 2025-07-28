@@ -9,7 +9,6 @@ ExMessage msg;
 char key;
 int status;//0 regular 1 stop
 int hr, mn, sc = 0;
-int hr_buffer, mn_buffer, sc_buffer = 0;
 WNDPROC g_originWndProc = NULL;
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT u_msg, WPARAM wParam, LPARAM lParam)
 {
@@ -211,7 +210,4 @@ void ioSys(char key)
 		FlushBatchDraw();
 		Sleep(10);
 	}
-	hr_buffer = hr;
-	mn_buffer = mn;
-	sc_buffer = sc;
 }
