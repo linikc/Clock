@@ -127,11 +127,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Interaction.cpp" />
+    <ClCompile Include="Logic.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="animation.cpp" />
+    <ClCompile Include="Display.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="extend.h" />
+    <ClInclude Include="Logic.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Display.h" />
+    <ClInclude Include="Interaction.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
