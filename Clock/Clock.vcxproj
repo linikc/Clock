@@ -127,7 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\backup\main.cpp" />
     <ClCompile Include="Display.cpp" />
     <ClCompile Include="Interaction.cpp" />
     <ClCompile Include="Logic.cpp" />

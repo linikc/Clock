@@ -14,6 +14,10 @@ InputState Interaction::GetInputState() {
     return input_state;
 }
 
+TimerMode Interaction::GetTimerMode() {
+    return Mode;
+}
+
 void Interaction::HandleInputA() {
     Time = 0;
     if (Key.vkcode >= '0' && Key.vkcode <= '9') {
@@ -41,11 +45,6 @@ void Interaction::HandleInputA() {
         input_state = (InputState)((input_state + 2) % 3);
         Input = "";
         return;
-    case VK_RETURN:
-        Status = RUN;
-        input_state = HOR;
-        Input = "";
-        Time = 0;
     default:
         break;
     }
@@ -66,8 +65,24 @@ void Interaction::HandleInputB() {
             Status = RUN;
         }
     }
-    if (Key.vkcode == 82)
+    if (Key.vkcode == 82) {
         Status = RESET;
+    }
+    if (Key.vkcode == VK_ESCAPE || Key.vkcode == 88)
+        Status = EXIT;
+}
+
+void Interaction::HandleModeChange() {
+    if (Key.vkcode == 77) {
+        Mode = (TimerMode)((Mode + 1) % 2);
+    }
+    if (Key.vkcode == VK_RETURN&&Status == START) {
+            Status = RUN;
+            input_state = HOR;
+            Time = 0;
+            Input = "";
+            return;
+    }
 }
 
 void Interaction::ReturnInput(int& time) {

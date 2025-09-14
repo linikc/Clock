@@ -7,8 +7,11 @@
 
 #define WIDTH       700
 #define HEIGHT      300
+#define WWIDTH      700
+#define HEIGHT      300
 #define FWIDTH      100
 #define FHEIGHT      20
+#define FFWIDTH      50
 #define OFFSET       10
 #define CLEAN       233
 //position of Hour
@@ -26,7 +29,6 @@ extern LOGFONT F;
 class TimerLogic;
 class TimerDrawer;
 class Interaction;
-
 //Timer State
 enum TimerMode {
     COUNT_UP, COUNT_DOWN
@@ -35,7 +37,8 @@ enum TimerMode {
 enum TimerStatus {
     START, RUN,
     STOP, WAIT,
-    SLEEP, RESET
+    DOWNEND, RESET,
+    EXIT
 };
 
 enum InputState {

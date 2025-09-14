@@ -5,7 +5,7 @@
 TimerStatus Status = START;
 
 //statement
-TimerMode mode = COUNT_DOWN;
+TimerMode Mode = COUNT_DOWN;
 TimerLogic logic;
 TimerDrawer draw;
 Interaction inter;
@@ -14,6 +14,7 @@ ExMessage msg;
 const int delay = 1 * CLOCKS_PER_SEC;
 int h, m, s;
 std::wstring tip = L"";
+std::wstring mode = L"DOWN";
 clock_t start_time = clock();
 clock_t end_time = clock();
 //handle exit
@@ -46,7 +47,7 @@ int main()
     BeginBatchDraw();
     while (Status == START) {
         Preparation();
-        logic.startTimer(h, m, s, mode);
+        logic.startTimer(h, m, s, Mode);
         while (Status == RUN || Status == STOP) {
             start_time = clock();
             tip = L"";
@@ -85,14 +86,14 @@ int WinMain(HINSTANCE hInstace, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nC
 {
     Init();
     BeginBatchDraw();
-    while (Status == START) {
+    while (Status != EXIT) {
         Preparation();
-        logic.startTimer(h, m, s, mode);
+        logic.startTimer(h, m, s, Mode);
+        if (Status == RESET)
+            Status = START;
         while (Status == RUN || Status == STOP) {
             start_time = clock();
             tip = L"";
-            if (logic.isFinish())
-                break;
             inter.GetInput(msg);
             inter.HandleInputB();
             logic.updateTimer();
@@ -104,12 +105,15 @@ int WinMain(HINSTANCE hInstace, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nC
                 tip = L"RESET";
                 Graphic(h, m, s, tip);
                 logic.resetTimer();
+                FlushBatchDraw();
+                Sleep(200);
             }
             logic.getCurrentTime(h, m, s);
             Graphic(h, m, s, tip);
             FlushBatchDraw();
             end_time = clock();
-            Sleep(delay - (end_time - start_time) > 0 ? delay - (end_time - start_time) : 0);
+            if(Status == RUN)
+                Sleep(delay - (end_time - start_time) > 0 ? delay - (end_time - start_time) : 0);
         }
     }
     Sleep(100);
@@ -142,13 +146,20 @@ void Graphic(int h, int m, int s, std::wstring tip) {
     draw.DrawLandscape();
     draw.DrawClock(h, m, s);
     draw.DrawTip(tip, F);
+    draw.DrawMode(mode, F);
 }
 
 void Preparation() {
     h = 0, m = 0, s = 0;
     while (Status == START) {
         inter.GetInput(msg);
+        inter.HandleModeChange();
         inter.HandleInputA();
+        inter.HandleInputB();
+        if (Mode == COUNT_UP)
+            mode = L"UP";
+        if (Mode == COUNT_DOWN)
+            mode = L"DOWN";
         if (Status == RUN) {
             inter.ReturnInput(s);
             break;

@@ -8,11 +8,17 @@ RECT min_rect = { 0,0,720,300 };
 RECT MS_sprt = { 0,0,920,300 };
 RECT sec_rect = { 0,0,1120,300 };
 //position of the tip in the center
-RECT tip_rect = { 0,0,700,500 };
-RECT tip_clean = { 20, 400, 600, 600 };
+RECT tip_rect = { 20,200,680,280 };
+RECT mode_rect = { 500,20,680,100 };
+RECT tip_clean = { 20, 20, 680, 100 };
 
 void TimerDrawer::toTipSize(LOGFONT F) {
-    F.lfHeight = 50;
+    F.lfHeight = FFWIDTH;
+    settextstyle(&F);
+}
+
+void TimerDrawer::toModeSize(LOGFONT F) {
+    F.lfHeight = FFWIDTH;
     settextstyle(&F);
 }
 
@@ -27,11 +33,15 @@ void TimerDrawer::DrawLandscape() {
 
 void TimerDrawer::CleanCanva() {
     solidroundrect(OFFSET, OFFSET, 690, 290, OFFSET, OFFSET);
-    solidrectangle(tip_rect.left, tip_rect.right, tip_rect.top, tip_rect.bottom);
+    solidrectangle(tip_rect.left, tip_rect.top, tip_rect.right, tip_rect.bottom);
 }
 
 void TimerDrawer::CleanTip() {
-    solidrectangle(tip_clean.left, tip_clean.right, tip_clean.top, tip_clean.bottom);
+    solidrectangle(tip_clean.left, tip_clean.top, tip_clean.right, tip_clean.bottom);
+}
+
+void TimerDrawer::CleanMode() {
+    solidrectangle(mode_rect.left, mode_rect.top, mode_rect.right, mode_rect.bottom);
 }
 
 void TimerDrawer::DrawClock(int h, int m, int s) {
@@ -53,4 +63,10 @@ void TimerDrawer::DrawTip(std::wstring tip, LOGFONT F) {
     toTipSize(F);
     CleanTip();
     drawtext(tip.c_str(), &tip_rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+}
+
+void TimerDrawer::DrawMode(std::wstring mode, LOGFONT F) {
+    toModeSize(F);
+    CleanMode();
+    drawtext(mode.c_str(), &mode_rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 }
