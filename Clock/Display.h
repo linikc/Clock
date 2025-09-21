@@ -8,7 +8,11 @@ private:
     void toTipSize(LOGFONT F);
     void toClockSize(LOGFONT F);
     void toModeSize(LOGFONT F);
-    int ratio = 0;
+    RECT ConvertRect(RECT rect);
+    float RatioW = 1;
+    float RatioH = 1;
+    float WWidth = WIDTH;
+    float WHeight = HEIGHT;
 public:
     void DrawLandscape();
     void DrawClock(int h, int m, int s);
@@ -17,4 +21,5 @@ public:
     void CleanMode();
     void DrawTip(std::wstring tip, LOGFONT F);
     void DrawMode(std::wstring mode, LOGFONT);
+    void toConvert();
 };

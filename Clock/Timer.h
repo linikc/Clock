@@ -1,17 +1,13 @@
 #pragma once
 #include <graphics.h>
 #include <string>
-#include <conio.h>
-#include <stdio.h>
 #include <ctime>
 
 #define WIDTH       700
 #define HEIGHT      300
-#define WWIDTH      700
-#define HEIGHT      300
-#define FWIDTH      100
-#define FHEIGHT      20
-#define FFWIDTH      50
+#define FFWIDTH     100
+#define FHEIGHT     100
+#define FTIP         50
 #define OFFSET       10
 #define CLEAN       233
 //position of Hour

@@ -8,7 +8,7 @@ private:
     int TotalSec = 0;
     int PauseSec = 0;
     int elapseSec = 0;
-    int interval = -1;
+    int Interval = -1;
     //storage the current time when pause
     clock_t ClockTime = clock();
     clock_t StartTime = clock();

@@ -25,14 +25,14 @@ void TimerLogic::startTimer(int InputHor, int InputMin, int InputSec, TimerMode 
     isRunning = true;
     switch (this->Mode) {
     case COUNT_DOWN:
-        interval = -1;
+        Interval = -1;
         TotalSec = toTotalSec(InputHor, InputMin, InputSec);
         StartTime = getCurCmpTime();
         EndTime = StartTime + toCmpTime(TotalSec);
         break;
     case COUNT_UP:
         StartTime = getCurCmpTime();
-        interval = 1;
+        Interval = 1;
     default:
         break;
     }
@@ -59,7 +59,7 @@ void TimerLogic::updateTimer() {
         Status = START;
         return;
     }
-    TotalSec += interval;
+    TotalSec += Interval;
 }
 
 void TimerLogic::getCurrentTime(int& hour, int& min, int& sec) {

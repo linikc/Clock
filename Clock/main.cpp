@@ -2,8 +2,9 @@
 #include "Display.h"
 #include "Logic.h"
 #include "Interaction.h"
+extern float WWidth;
+extern float WHeight;
 TimerStatus Status = START;
-
 //statement
 TimerMode Mode = COUNT_DOWN;
 TimerLogic logic;
@@ -11,21 +12,28 @@ TimerDrawer draw;
 Interaction inter;
 LOGFONT F;
 ExMessage msg;
+
 const int delay = 1 * CLOCKS_PER_SEC;
 int h, m, s;
+float WidthofWin = WIDTH;
+float HeightofWin = HEIGHT;
+static RECT border_thickness;
+
 std::wstring tip = L"";
 std::wstring mode = L"DOWN";
+
 clock_t start_time = clock();
 clock_t end_time = clock();
 //handle exit
-WNDPROC g_originWndProc = NULL;
+WNDPROC WndProc = nullptr;
+HWND hwnd = nullptr;
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT u_msg, WPARAM wParam, LPARAM lParam)
 {
     if (u_msg == WM_CLOSE) {
         exit(0);
     }
     else {
-        LRESULT result = CallWindowProc((WNDPROC)g_originWndProc, hwnd, u_msg, wParam, lParam);
+        LRESULT result = CallWindowProc((WNDPROC)WndProc, hwnd, u_msg, wParam, lParam);
         return result;
     }
 }
@@ -127,22 +135,25 @@ int WinMain(HINSTANCE hInstace, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nC
 //definition of the function
 void Init() {
     printf("Init...\n");
+    draw.toConvert();
 #if DEBUG
-    initgraph(WIDTH, HEIGHT, SHOWCONSOLE);
+    initgraph(WIDTH,HEIGHT,EX_SHOWCONSOLE);
 #else 
-    initgraph(WIDTH, HEIGHT);
+    initgraph(WIDTH,HEIGHT);
 #endif
     gettextstyle(&F);
-    F.lfHeight = FWIDTH;
+    F.lfHeight = FFWIDTH;
     settextstyle(&F);
-    HWND hwnd = GetHWnd();
-    g_originWndProc = (WNDPROC)GetWindowLongPtr(hwnd, GWLP_WNDPROC);
+    hwnd = GetHWnd();
+    SetWindowPos(hwnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED);
+    WndProc = (WNDPROC)GetWindowLongPtr(hwnd, GWLP_WNDPROC);
     SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG_PTR)WindowProc);
     draw.CleanCanva();
     draw.DrawLandscape();
 }
 
 void Graphic(int h, int m, int s, std::wstring tip) {
+    draw.toConvert();
     draw.DrawLandscape();
     draw.DrawClock(h, m, s);
     draw.DrawTip(tip, F);
