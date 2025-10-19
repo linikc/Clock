@@ -8,6 +8,7 @@ I won't promise to keep upholding this project. But I will update if I find some
 **P** for pause  
 **A**/**D**/**<-**/**->** for changing input cursor  
 **M** for changing counting mode  
+**ESC** for exiting
 + COUNT UP
 + COUNT DOWN
 ## The lib I have used
