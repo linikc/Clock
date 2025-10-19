@@ -40,7 +40,7 @@ void TimerDrawer::toClockSize(LOGFONT F) {
     settextstyle(&F);
 }
 
-RECT TimerDrawer::ConvertRect(RECT rect) {
+RECT TimerDrawer::ConvertRect(RECT rect,float WWidth,float WHeight) {
     RatioH = WHeight / HEIGHT;
     RatioW = WWidth / WIDTH;
     rect.left = rect.left * RatioW;
@@ -94,16 +94,16 @@ void TimerDrawer::DrawMode(std::wstring mode, LOGFONT F) {
     drawtext(mode.c_str(), &mode_rect_convert, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 }
 
-void TimerDrawer::toConvert() {
-    hour_rect_convert = ConvertRect(hour_rect);
-    HM_sprt_convert = ConvertRect(HM_sprt);
-    min_rect_convert = ConvertRect(min_rect);
-    MS_sprt_convert = ConvertRect(MS_sprt);
-    sec_rect_convert = ConvertRect(sec_rect);
-    tip_rect_convert = ConvertRect(tip_rect);
-    mode_rect_convert = ConvertRect(mode_rect);
-    tip_clean_rect_convert = ConvertRect(tip_clean_rect);
-    clock_rect_convert = ConvertRect(clock_recct);
+void TimerDrawer::toConvert(float width,float height) {
+    hour_rect_convert = ConvertRect(hour_rect, width, height);
+    HM_sprt_convert = ConvertRect(HM_sprt, width, height);
+    min_rect_convert = ConvertRect(min_rect, width, height);
+    MS_sprt_convert = ConvertRect(MS_sprt, width, height);
+    sec_rect_convert = ConvertRect(sec_rect, width, height);
+    tip_rect_convert = ConvertRect(tip_rect, width, height);
+    mode_rect_convert = ConvertRect(mode_rect, width, height);
+    tip_clean_rect_convert = ConvertRect(tip_clean_rect, width, height);
+    clock_rect_convert = ConvertRect(clock_recct, width, height);
     printf("%d ",hour_rect_convert.right);
     printf("%f\n", RatioH);
 }

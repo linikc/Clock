@@ -15,8 +15,8 @@ ExMessage msg;
 
 const int delay = 1 * CLOCKS_PER_SEC;
 int h, m, s;
-float WidthofWin = WIDTH;
-float HeightofWin = HEIGHT;
+float WidthofWin = 500;
+float HeightofWin = 200;
 static RECT border_thickness;
 
 std::wstring tip = L"";
@@ -42,6 +42,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT u_msg, WPARAM wParam, LPARAM lParam)
 void Init();
 void Graphic(int h, int m, int s, std::wstring tip);
 void Preparation();
+void Exit();
+void RunTime();
 
 #if DEBUG
 int main();
@@ -53,93 +55,26 @@ int main()
 {
     Init();
     BeginBatchDraw();
-    while (Status == START) {
-        Preparation();
-        logic.startTimer(h, m, s, Mode);
-        while (Status == RUN || Status == STOP) {
-            start_time = clock();
-            tip = L"";
-            if (logic.isFinish())
-                break;
-            inter.GetInput(msg);
-            inter.HandleInputB();
-            logic.updateTimer();
-            logic.stopResume();
-            if (Status == STOP)
-                tip = L"Pause";
-            if (Status == RESET)
-            {
-                tip = L"RESET";
-                Graphic(h, m, s, tip);
-                logic.resetTimer();
-            }
-            logic.getCurrentTime(h, m, s);
-            Graphic(h, m, s, tip);
-            FlushBatchDraw();
-            printf("%d %d %d\n", h, m, s);
-            end_time = clock();
-            Sleep(delay - (end_time - start_time) > 0 ? delay - (end_time - start_time) : 0);
-        }
-    }
-    Sleep(100);
-    tip = L"Exiting...";
-    Graphic(h, m, s, tip);
-    printf("Exiting...");
-    FlushBatchDraw();
-    EndBatchDraw();
-    Sleep(1000);
+    RunTime();
+    Exit();
     return 0;
 }
 int WinMain(HINSTANCE hInstace, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
     Init();
     BeginBatchDraw();
-    while (Status != EXIT) {
-        Preparation();
-        logic.startTimer(h, m, s, Mode);
-        if (Status == RESET)
-            Status = START;
-        while (Status == RUN || Status == STOP) {
-            start_time = clock();
-            tip = L"";
-            inter.GetInput(msg);
-            inter.HandleInputB();
-            logic.updateTimer();
-            logic.stopResume();
-            if (Status == STOP)
-                tip = L"Pause";
-            if (Status == RESET)
-            {
-                tip = L"RESET";
-                Graphic(h, m, s, tip);
-                logic.resetTimer();
-                FlushBatchDraw();
-                Sleep(200);
-            }
-            logic.getCurrentTime(h, m, s);
-            Graphic(h, m, s, tip);
-            FlushBatchDraw();
-            end_time = clock();
-            if(Status == RUN)
-                Sleep(delay - (end_time - start_time) > 0 ? delay - (end_time - start_time) : 0);
-        }
-    }
-    Sleep(100);
-    tip = L"Exiting...";
-    Graphic(h, m, s, tip);
-    FlushBatchDraw();
-    EndBatchDraw();
-    Sleep(1000);
+    RunTime();
+    Exit();
     return 0;
 }
 //definition of the function
 void Init() {
     printf("Init...\n");
-    draw.toConvert();
+    draw.toConvert(WidthofWin,HeightofWin);
 #if DEBUG
-    initgraph(WIDTH,HEIGHT,EX_SHOWCONSOLE);
+    initgraph(WidthofWin,HeightofWin,EX_SHOWCONSOLE);
 #else 
-    initgraph(WIDTH,HEIGHT);
+    initgraph(WidthofWin,HeightofWin);
 #endif
     gettextstyle(&F);
     F.lfHeight = FFWIDTH;
@@ -153,7 +88,7 @@ void Init() {
 }
 
 void Graphic(int h, int m, int s, std::wstring tip) {
-    draw.toConvert();
+    draw.toConvert(WidthofWin,HeightofWin);
     draw.DrawLandscape();
     draw.DrawClock(h, m, s);
     draw.DrawTip(tip, F);
@@ -188,4 +123,50 @@ void Preparation() {
         Sleep(100);
     }
     tip = L"";
+}
+
+void Exit(){
+    Sleep(100);
+    tip = L"Exiting...";
+    Graphic(h, m, s, tip);
+    FlushBatchDraw();
+    EndBatchDraw();
+    Sleep(1000);
+}
+
+void RunTime() {
+    while (Status != EXIT) {
+        Preparation();
+        logic.startTimer(h, m, s, Mode);
+        if (Status == RESET)
+            Status = START;
+        while (Status == RUN || Status == STOP) {
+            start_time = clock();
+            tip = L"";
+            inter.GetInput(msg);
+            inter.HandleInputB();
+            logic.updateTimer();
+            logic.stopResume();
+            if (Status == STOP)
+                tip = L"Pause";
+            if (Status == RESET)
+            {
+                tip = L"RESET";
+                Graphic(h, m, s, tip);
+                logic.resetTimer();
+                FlushBatchDraw();
+                Sleep(200);
+            }
+            logic.getCurrentTime(h, m, s);
+            #ifdef DEBUG
+            printf("%d %d %d\n", h, m, s);
+            #endif // DEBUG
+
+            Graphic(h, m, s, tip);
+            FlushBatchDraw();
+            end_time = clock();
+            if (Status == RUN)
+                Sleep(delay - (end_time - start_time) > 0 ? delay - (end_time - start_time) : 0);
+        }
+    }
 }
